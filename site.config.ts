@@ -9,27 +9,36 @@ import { defineSiteConfig } from "./src/config/site";
 
 export const siteConfig = defineSiteConfig({
 	// Required: the four values most sites should personalize first.
-	author: "Mira Latticewell",
+	author: "Sergio Muñoz",
 	siteUrl: "https://serml.github.io",
 	hero: {
 		headline:
-			"Fictional research on learning systems, shared archives, and humane web infrastructure.",
+			"Associate Professor at Universidad Politécnica de Madrid.",
 		subheadline:
-			"Mira Latticewell is an entirely fictional scholar created to demonstrate this academic portfolio theme.",
+			"Sergio Muñoz works as an Associate Professor at Universidad Politécnica de Madrid.",
 		profileImage: "/profile.svg",
-		profileAlt: "Abstract illustration representing the fictional researcher Mira Latticewell",
-		statusBadge: "Fictional demo profile",
+		profileAlt: "Profile photo of Sergio Muñoz",
+		statusBadge: "Associate Professor",
 	},
 
 	// Common profile and discovery settings.
 	description:
-		"An entirely fictional academic profile demonstrating the Scholar Pages Astro theme.",
+		"The website of Associate Professor Sergio Muñoz.",
 	keywords: [
-		"synthetic learning environments",
-		"fictional archives",
-		"humane web infrastructure",
-		"academic website",
-		"demo profile",
+		"sergio muñoz",
+		"associate professor",
+		"universidad politécnica de madrid",
+		"profesor",
+		"etsit upm",
+		"escuela técnica superior de ingenieros de telecomunicación",
+		"etsit upm tfg",
+		"teleco",
+		"ingeniería de telecomunicaciones",
+		"ingeniería biomédica",
+		"sergio muñoz lópez",
+		"gsi",
+		"grupo de sistemas inteligentes",
+		"gsi upm"
 	],
 	// Optional social-preview overrides:
 	// language: "en",
@@ -40,27 +49,28 @@ export const siteConfig = defineSiteConfig({
 	// ogImageHeight: 630,
 	affiliations: [
 		{
-			role: "Fictional Associate Professor",
-			department: "School of Imaginary Systems",
-			institution: "Northstar Commons University (fictional)",
+			role: "Associate Professor",
+			department: "Intelligent Systems Group",
+			institution: "Universidad Politécnica de Madrid",
 		},
 	],
 	researchInterests: [
-		"Synthetic Learning Environments",
-		"Speculative Interfaces",
-		"Fictional Archives",
-		"Imaginary Civic Systems",
+		"Digital Health",
+		"Urban Computing",
+		"Computational Creativity",
+		"Sports Analytics",
+		"Responsible AI",
 	],
 	socialLinks: [
 		{
-			label: "Sample repository",
-			href: "https://example.com/mira-latticewell/repository",
+			label: "Github",
+			href: "https://github.com/serml",
 			icon: "i-mdi:github",
 		},
 		{
 			label: "Sample notes",
 			href: "https://example.com/mira-latticewell/notes",
-			icon: "i-mdi:bookshelf",
+			icon: "i-mdi:linkedin",
 		},
 		{
 			label: "Sample archive",
