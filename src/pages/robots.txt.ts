@@ -1,17 +1,16 @@
 import type { APIRoute } from "astro";
 import siteConfig from "../side.config";
-import { withTrailingSlash } from "../lib/site-url";
+import { buildAbsoluteUrl } from "../lib/site-url";
 
 export const prerender = true;
 
-export const GET: APIRoute = ({ site }) => {
-	const siteUrl = site ?? new URL(withTrailingSlash(siteConfig.siteUrl));
-	const sitemapUrl = new URL("sitemap-index.xml", siteUrl);
+export const GET: APIRoute = () => {
+	const sitemapUrl = buildAbsoluteUrl("/sitemap-index.xml", siteConfig.siteUrl);
 	const body = [
 		"User-agent: *",
 		"Allow: /",
 		"",
-		`Sitemap: ${sitemapUrl.href}`,
+		`Sitemap: ${sitemapUrl}`,
 		"",
 	].join("\n");
 

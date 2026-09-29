@@ -44,6 +44,19 @@ describe("site URL helpers", () => {
 		);
 	});
 
+	it("keeps project-site paths when building page and asset URLs", () => {
+		const siteUrl = "https://example.github.io/scholar-site";
+		expect(buildAbsoluteUrl("/profile.svg", siteUrl)).toBe(
+			"https://example.github.io/scholar-site/profile.svg",
+		);
+		expect(buildCanonicalUrl("/projects/scholars-portal", siteUrl)).toBe(
+			"https://example.github.io/scholar-site/projects/scholars-portal/",
+		);
+		expect(buildCanonicalUrl("/scholar-site/about", siteUrl)).toBe(
+			"https://example.github.io/scholar-site/about/",
+		);
+	});
+
 	it("preserves file-like canonical paths", () => {
 		expect(buildCanonicalUrl("/robots.txt", "https://example.edu")).toBe(
 			"https://example.edu/robots.txt",

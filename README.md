@@ -77,6 +77,15 @@ Deploy that folder to Cloudflare Pages, Vercel, Netlify, GitHub Pages, or anothe
 static host. If your host builds the site, use `pnpm build` as the build command
 and `dist` as the output directory.
 
+#### GitHub Pages
+
+To publish at `https://serml.github.io/`, first rename this repository to
+`serml.github.io` in **Settings → General → Repository name**. Then open
+**Settings → Pages**, set **Build and deployment → Source** to **GitHub Actions**,
+and push to `main` or run **Deploy to GitHub Pages** from the Actions tab. The
+workflow builds the site at the domain root. If you use a different domain,
+update `siteUrl` in `site.config.ts` to match.
+
 **Building and deploying don't require the Actions PR permission.** Enable it
 only if you want the default [automatic template updates](#template-updates).
 

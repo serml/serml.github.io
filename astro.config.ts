@@ -7,7 +7,7 @@ import siteConfig from "./src/side.config";
 import { withTrailingSlash } from "./src/lib/site-url";
 
 export default defineConfig({
-	site: withTrailingSlash(siteConfig.siteUrl),
+	site: withTrailingSlash(new URL(siteConfig.siteUrl).origin),
 	integrations: [sitemap(), mdx()],
 	vite: {
 		build: {
