@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { getLocale, getTranslations } from "../../utils/i18n";
 
 interface Props {
     title: string;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const { title, url, description } = Astro.props;
+const { ui } = getTranslations(getLocale(Astro.url.pathname));
 
 const shareUrls = {
     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
@@ -18,18 +20,18 @@ const shareUrls = {
 ---
 
 <div class="flex items-center gap-4 mt-8">
-    <span class="body-sm font-semibold" style="opacity: 0.75;">Share:</span>
+    <span class="body-sm font-semibold" style="opacity: 0.75;">{ui.share}</span>
     <div class="flex gap-2">
-        <a href={shareUrls.twitter} target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" class="icon-btn">
+        <a href={shareUrls.twitter} target="_blank" rel="noopener noreferrer" aria-label={ui.shareOnTwitter} class="icon-btn">
             <Icon name="Twitter" size={24} />
         </a>
-        <a href={shareUrls.facebook} target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" class="icon-btn">
+        <a href={shareUrls.facebook} target="_blank" rel="noopener noreferrer" aria-label={ui.shareOnFacebook} class="icon-btn">
             <Icon name="Facebook" size={24} />
         </a>
-        <a href={shareUrls.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn" class="icon-btn">
+        <a href={shareUrls.linkedin} target="_blank" rel="noopener noreferrer" aria-label={ui.shareOnLinkedIn} class="icon-btn">
             <Icon name="LinkedIn" size={24} />
         </a>
-        <a href={shareUrls.email} aria-label="Share via Email" class="icon-btn">
+        <a href={shareUrls.email} aria-label={ui.shareByEmail} class="icon-btn">
             <Icon name="Mail" size={24} />
         </a>
     </div>

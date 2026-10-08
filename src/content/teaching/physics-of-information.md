@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "physics-of-information"
 title: "The Physics of Information"
 institution: "MIT"
 description: "A course exploring the fundamental connections between physics, information theory, and computation."

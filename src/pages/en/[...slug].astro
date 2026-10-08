@@ -1,0 +1,190 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseListing from "../../layouts/BaseListing.astro";
+import BaseDetail from "../../layouts/BaseDetail.astro";
+import BaseItemCard from "../../components/ui/BaseItemCard.astro";
+import ContentHeader from "../../components/content/ContentHeader.astro";
+import Tag from "../../components/ui/Tag.astro";
+import Timeline from "../../components/ui/Timeline.astro";
+import { PAGES, SITE } from "../../config";
+import { getAllTags, getContentByTag } from "../../utils/tags";
+import { getTranslations, localizedPath } from "../../utils/i18n";
+import { getContentSlug, getLocalizedCollection, getLocalizedEntry } from "../../utils/content";
+
+const allCollectionNames = ["publications", "talks", "teaching", "projects", "posts"] as const;
+const collectionNames = allCollectionNames.filter((name) => PAGES[name === "posts" ? "blog" : name]?.isActive !== false);
+type CollectionName = typeof collectionNames[number];
+const { pages, ui } = getTranslations("en");
+
+export async function getStaticPaths() {
+    const allCollectionNames = ["publications", "talks", "teaching", "projects", "posts"] as const;
+    const collectionNames = allCollectionNames.filter((name) => PAGES[name === "posts" ? "blog" : name]?.isActive !== false);
+    const paths: { params: { slug: string } }[] = [
+    ];
+    if (PAGES.cv.isActive !== false) paths.push({ params: { slug: "cv" } });
+    if (PAGES.tags.isActive !== false) paths.push({ params: { slug: "tags" } });
+
+    for (const collection of collectionNames) {
+        const entries = await getLocalizedCollection(collection, "en");
+        if (collection === "posts") {
+            const pageCount = Math.ceil(entries.length / SITE.postPerPage);
+            if (pageCount === 0) paths.push({ params: { slug: "posts" } });
+            for (let page = 1; page <= pageCount; page++) {
+                paths.push({ params: { slug: page === 1 ? "posts" : `posts/${page}` } });
+            }
+        } else {
+            paths.push({ params: { slug: collection } });
+        }
+        for (const entry of entries) {
+            paths.push({ params: { slug: `${collection}/${getContentSlug(entry)}` } });
+        }
+    }
+
+    if (PAGES.tags.isActive !== false) {
+        const tags = await getAllTags("en");
+        for (const tag of tags) paths.push({ params: { slug: `tags/${tag.name}` } });
+    }
+    return paths;
+}
+
+const segments = Astro.params.slug.split("/");
+const section = segments[0];
+const entryId = segments.slice(1).join("/");
+const isCollection = collectionNames.includes(section as CollectionName);
+const collection = isCollection ? section as CollectionName : undefined;
+
+let listingEntries: any[] = [];
+let listingPage: any;
+let detailEntry: any;
+let cvEntry: any;
+let cvContent: any;
+let tagContent: any[] = [];
+let tags: Awaited<ReturnType<typeof getAllTags>> = [];
+
+if (collection === "posts" && (!entryId || /^\d+$/.test(entryId))) {
+        const allPosts = await getLocalizedCollection("posts", "en");
+        const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date || 0).getTime() - new Date(a.data.date || 0).getTime());
+        const currentPage = entryId ? Number(entryId) : 1;
+        const lastPage = Math.ceil(sortedPosts.length / SITE.postPerPage);
+        listingEntries = sortedPosts.slice((currentPage - 1) * SITE.postPerPage, currentPage * SITE.postPerPage);
+        listingPage = {
+            data: listingEntries,
+            currentPage,
+            lastPage,
+            url: {
+                prev: currentPage > 1 ? `/posts/${currentPage === 2 ? "" : currentPage - 1}` : undefined,
+                next: currentPage < lastPage ? `/posts/${currentPage + 1}` : undefined,
+            },
+        };
+} else if (collection && entryId) {
+    detailEntry = await getLocalizedEntry(collection, entryId, "en");
+} else if (collection) {
+    listingEntries = await getLocalizedCollection(collection, "en");
+} else if (section === "cv") {
+    cvEntry = await getLocalizedEntry("cv", "cv", "en");
+    if (cvEntry) cvContent = await render(cvEntry);
+} else if (section === "tags" && entryId) {
+    tagContent = await getContentByTag(decodeURIComponent(entryId), "en");
+} else if (section === "tags") {
+    tags = await getAllTags("en");
+}
+
+const cvData = cvEntry?.data;
+const CVContent = cvContent?.Content;
+---
+
+{collection && !entryId && collection !== "posts" && (
+    <BaseListing
+        collection={collection}
+        title={pages[collection === "posts" ? "blog" : collection].title}
+        subtitle={pages[collection === "posts" ? "blog" : collection].subtitle}
+        entries={listingEntries}
+        lang="en"
+    />
+)}
+
+{collection === "posts" && listingPage && (
+    <BaseListing collection="posts" title={pages.blog.title} subtitle={pages.blog.subtitle} page={listingPage} lang="en" robots="noindex, follow" />
+)}
+
+{collection && entryId && !listingPage && detailEntry && <BaseDetail collection={collection} id={entryId} lang="en" />}
+
+{section === "cv" && cvData && (
+    <BaseLayout title={pages.cv.title} lang="en">
+        <header class="page-header">
+            <h1 class="page-title">{pages.cv.title}</h1>
+            <p class="page-subtitle">{pages.cv.subtitle}</p>
+        </header>
+        <div class="container-narrow">
+            {cvData.experience?.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">{ui.professionalExperience}</h2>
+                    <Timeline items={cvData.experience.map((item: any) => ({ title: item.role, subtitle: item.institution, period: item.period, description: item.description }))} />
+                </section>
+            )}
+            {cvData.education?.length > 0 && (
+                <section class="section">
+                    <h2 class="section-title border-b border-border pb-2">{ui.education}</h2>
+                    <Timeline items={cvData.education.map((item: any) => ({ title: item.degree, subtitle: item.institution, period: item.period, description: item.description, thesis: item.thesis }))} />
+                </section>
+            )}
+            <div class="prose max-w-none">{CVContent && <CVContent />}</div>
+        </div>
+    </BaseLayout>
+)}
+
+{section === "tags" && !entryId && (
+    <BaseLayout title={pages.tags.title} lang="en">
+        <div class="content-container">
+            <ContentHeader title={pages.tags.title} meta={[{ value: `${tags.length} ${ui.uniqueTopics}` }]} />
+            <div class="container-narrow pt-12">
+                <div class="flex flex-wrap gap-4 items-center justify-center min-h-[300px] stagger-fade-in">
+                    {tags.map((tag) => <Tag name={tag.name} count={tag.count} size="md" />)}
+                </div>
+                {tags.length === 0 && <p class="text-center text-text-muted mt-20 font-mono italic">{ui.noTags}</p>}
+            </div>
+        </div>
+    </BaseLayout>
+)}
+
+{section === "tags" && entryId && (
+    <BaseLayout title={`#${decodeURIComponent(entryId)}`} lang="en">
+        <header class="page-header">
+            <h1 class="page-title">#{decodeURIComponent(entryId)}</h1>
+            <p class="page-subtitle">{ui.taggedWith} “{decodeURIComponent(entryId)}”</p>
+        </header>
+        <section class="item-list">
+            {tagContent.map((item) => {
+                const listingItem = {
+                    title: item.data.title || item.id,
+                    description: item.data.description,
+                    date: item.data.date,
+                    authors: item.data.author,
+                    extraInput: item.data.journal || item.data.event || item.data.institution,
+                    externalUrl: item.data.doi ? `https://doi.org/${item.data.doi}` : item.data.external_url,
+                    tags: item.data.tags,
+                };
+                const isPublicationDoi = item.collection === "publications" && item.data.doi;
+                const href = isPublicationDoi
+                    ? `https://doi.org/${item.data.doi}`
+                    : localizedPath(`/${item.collection}/${getContentSlug(item)}`, "en");
+                return <BaseItemCard {...listingItem} href={href} titleTarget={isPublicationDoi ? "_blank" : undefined} externalUrl={isPublicationDoi ? undefined : listingItem.externalUrl} />;
+            })}
+        </section>
+    </BaseLayout>
+)}
+
+{!isCollection && section !== "cv" && section !== "tags" && (
+    <BaseLayout title={`404: ${ui.pageNotFound}`} lang="en">
+        <div class="flex flex-col items-center justify-center min-h-[50vh] text-center px-4">
+            <h1 class="text-9xl font-black text-accent tracking-tighter sm:text-[12rem] leading-none mb-4">404</h1>
+            <p class="text-2xl font-bold text-foreground mb-8 opacity-80">{ui.pageNotFound}</p>
+            <a href="/en" class="link">{ui.returnHome}</a>
+        </div>
+    </BaseLayout>
+)}
+
+{isCollection && collection && entryId && !listingPage && !detailEntry && (
+    <BaseLayout title={`404: ${ui.pageNotFound}`} lang="en"><p>{ui.pageNotFound}</p></BaseLayout>
+)}

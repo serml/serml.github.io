@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "cv"
 name: "Claude Shannon"
 title: "Mathematician and Electrical Engineer"
 experience:

@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import BaseDetail from "../../layouts/BaseDetail.astro";
 import { PAGES } from "../../config";
+import { getContentSlug, getLocalizedCollection } from "../../utils/content";
 
 if (PAGES.talks.isActive === false) {
     return Astro.redirect("/404");
@@ -9,9 +9,9 @@ if (PAGES.talks.isActive === false) {
 
 export async function getStaticPaths() {
     if (PAGES.talks.isActive === false) return [];
-    const talks = await getCollection("talks");
+    const talks = await getLocalizedCollection("talks", "es");
     return talks.map((talk: any) => ({
-        params: { id: talk.id },
+        params: { id: getContentSlug(talk) },
         props: { talk },
     }));
 }

@@ -1,0 +1,21 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../utils/i18n";
+import { getLocalizedBio } from "../../utils/content";
+
+const { pages } = getTranslations("en");
+const bioEntry = await getLocalizedBio("en");
+const { Content: BioContent } = bioEntry ? await render(bioEntry) : { Content: null };
+---
+
+<BaseLayout title={pages.home.title} lang="en">
+    <div class="container-narrow">
+        <header class="page-header">
+            <h1 class="page-title">{pages.home.title}</h1>
+        </header>
+        <div class="prose">
+            {BioContent ? <BioContent /> : <p>Bio not found.</p>}
+        </div>
+    </div>
+</BaseLayout>

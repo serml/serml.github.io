@@ -1,8 +1,9 @@
 ---
-import { SITE, THEME_CONFIG, ANALYTICS, THEMES } from "../config";
+import { SITE, THEME_CONFIG, ANALYTICS, THEMES, SOCIALS } from "../config";
 import { ClientRouter } from "astro:transitions";
 import LeftSidebar from "../components/layout/LeftSidebar.astro";
 import RightMain from "../components/layout/RightMain.astro";
+import { getLocale, getTranslations, localizedPath } from "../utils/i18n";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -21,39 +22,84 @@ const themeDark = THEMES[themeDarkKey] || THEMES.dark_default;
 
 interface Props {
     title: string;
+    lang?: "es" | "en";
     description?: string;
     ogImage?: string;
     ogType?: "website" | "article";
-    robots?: "index, follow" | "noindex, nofollow";
+    robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
 }
 
 const { 
     title, 
-    description = SITE.desc, 
+    lang = getLocale(Astro.url.pathname),
+    description,
     ogImage = SITE.ogImage,
     ogType = "website",
     robots = "index, follow"
 } = Astro.props;
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || SITE.website);
-
+const pageDescription = description ?? getTranslations(lang).siteDescription;
+const pageTitle = `${title} | ${SITE.title}`;
+const toPageURL = (pathname: string) => {
+    const url = new URL(pathname, SITE.website);
+    if (!url.pathname.endsWith("/")) url.pathname = `${url.pathname}/`;
+    return url;
+};
+const canonicalURL = toPageURL(Astro.url.pathname);
+const socialImageURL = new URL(ogImage, SITE.website);
+const spanishURL = toPageURL(localizedPath(Astro.url.pathname, "es"));
+const englishURL = toPageURL(localizedPath(Astro.url.pathname, "en"));
+const personId = new URL("#person", SITE.website).href;
+const websiteId = new URL("#website", SITE.website).href;
 const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: SITE.author,
-    url: SITE.website,
-    jobTitle: "Professor",
-    description: SITE.desc,
+    "@graph": [
+        {
+            "@type": "Person",
+            "@id": personId,
+            name: SITE.author,
+            url: SITE.website,
+            image: new URL(SITE.favicon, SITE.website).href,
+            jobTitle: lang === "es" ? "Profesor e investigador en inteligencia artificial" : "Professor and researcher in artificial intelligence",
+            worksFor: {
+                "@type": "EducationalOrganization",
+                name: "Universidad Politécnica de Madrid",
+                url: "https://www.upm.es/",
+            },
+            memberOf: {
+                "@type": "Organization",
+                name: "Intelligent Systems Group (GSI)",
+                url: "https://www.gsi.upm.es/es/",
+            },
+            sameAs: SOCIALS.filter((social) => social.href.startsWith("https://")).map((social) => social.href),
+        },
+        {
+            "@type": "WebSite",
+            "@id": websiteId,
+            url: SITE.website,
+            name: SITE.title,
+            inLanguage: ["es", "en"],
+            publisher: { "@id": personId },
+        },
+        {
+            "@type": "WebPage",
+            "@id": `${canonicalURL.href}#webpage`,
+            url: canonicalURL.href,
+            name: pageTitle,
+            description: pageDescription,
+            inLanguage: lang,
+            isPartOf: { "@id": websiteId },
+            about: { "@id": personId },
+        },
+    ],
 };
 ---
 
 <!doctype html>
-<html lang={SITE.lang}>
+<html lang={lang}>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href={SITE.favicon} />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href={SITE.favicon} />
         <meta name="generator" content={Astro.generator} />
 
         <!-- Robots / Indexing -->
@@ -99,26 +145,38 @@ const jsonLd = {
 
         <!-- Canonical URL -->
         <link rel="canonical" href={canonicalURL} />
+        {robots === "index, follow" && (
+            <>
+                <link rel="alternate" hreflang="es" href={spanishURL} />
+                <link rel="alternate" hreflang="en" href={englishURL} />
+                <link rel="alternate" hreflang="x-default" href={spanishURL} />
+            </>
+        )}
 
         <!-- General Meta Tags -->
-        <title>{title} | {SITE.title}</title>
-        <meta name="title" content={`${title} | ${SITE.title}`} />
-        <meta name="description" content={description} />
+        <title>{pageTitle}</title>
+        <meta name="title" content={pageTitle} />
+        <meta name="description" content={pageDescription} />
         <meta name="author" content={SITE.author} />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content={ogType} />
-        <meta property="og:url" content={Astro.url} />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:site_name" content={SITE.title} />
+        <meta property="og:locale" content={lang === "es" ? "es_ES" : "en_US"} />
+        <meta property="og:locale:alternate" content={lang === "es" ? "en_US" : "es_ES"} />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={new URL(ogImage, Astro.url)} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:image" content={socialImageURL} />
+        <meta property="og:image:alt" content={`${SITE.author} — ${title}`} />
 
         <!-- Twitter -->
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={Astro.url} />
-        <meta property="twitter:title" content={title} />
-        <meta property="twitter:description" content={description} />
-        <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={socialImageURL} />
+        <meta name="twitter:image:alt" content={`${SITE.author} — ${title}`} />
 
         <!-- Structured Data (JSON-LD) -->
         <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

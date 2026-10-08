@@ -1,10 +1,14 @@
 ---
 import { SITE, THEME_CONFIG, SETTINGS } from "../../config";
 import Icon from "../ui/Icon.astro";
+import { getLocale, getTranslations } from "../../utils/i18n";
 
 const currentYear = new Date().getFullYear();
 const showToggle = THEME_CONFIG.lightAndDark;
+const showRSS = import.meta.env.DEV || SETTINGS.showRSSInFooter;
 const showDevTools = import.meta.env.DEV || SETTINGS.addDevToolsInProduction;
+const locale = getLocale(Astro.url.pathname);
+const { ui } = getTranslations(locale);
 ---
 
 <footer class="footer">
@@ -13,28 +17,32 @@ const showDevTools = import.meta.env.DEV || SETTINGS.addDevToolsInProduction;
     </div>
     <div class="flex items-center gap-4">
         <span class="body-xs hidden sm:inline-block"
-            >Built with <a
+            >{ui.builtWith} <a
                 href="https://github.com/rubzip/academic-portfolio-astro/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="link">Academic Portfolio Astro</a
             ></span
         >
-        <a
-            href="/rss.xml"
-            aria-label="RSS Feed"
-            title="RSS Feed"
-            target="_blank"
-            rel="noreferrer"
-            class="btn-icon"
-        >
-            <Icon name="RSS" size={16} />
-        </a>
+        {
+            showRSS && (
+                <a
+                    href="/rss.xml"
+                    aria-label="RSS Feed"
+                    title="RSS Feed"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-icon"
+                >
+                    <Icon name="RSS" size={16} />
+                </a>
+            )
+        }
         {
             showToggle && (
                 <button
                     id="theme-toggle"
-                    aria-label="Toggle Dark Mode"
+                    aria-label={ui.toggleTheme}
                     class="btn-icon"
                 >
                     <Icon name="Sun" size={16} class="hidden dark:block" />
@@ -46,8 +54,8 @@ const showDevTools = import.meta.env.DEV || SETTINGS.addDevToolsInProduction;
             showDevTools && (
                 <a
                     href="/dev-tools"
-                    aria-label="Developer Tools"
-                    title="Developer Tools"
+                    aria-label={ui.developerTools}
+                    title={ui.developerTools}
                     class="btn-icon"
                 >
                     <Icon name="Settings" size={16} />

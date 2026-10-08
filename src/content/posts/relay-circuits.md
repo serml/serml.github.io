@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "relay-circuits"
 title: "Symbolic Analysis of Relay and Switching Circuits"
 date: "1937-10-01"
 description: "My master's thesis that applied Boolean algebra to electrical circuits, laying the groundwork for digital computing and modern computer science."

@@ -1,11 +1,12 @@
-import { getCollection } from 'astro:content';
+import type { Locale } from "./i18n";
+import { getLocalizedCollection } from "./content";
 
-export async function getAllTags() {
-    const publications = await getCollection('publications');
-    const talks = await getCollection('talks');
-    const projects = await getCollection('projects');
-    const posts = await getCollection('posts');
-    const teaching = await getCollection('teaching');
+export async function getAllTags(locale: Locale = "es") {
+    const publications = await getLocalizedCollection('publications', locale);
+    const talks = await getLocalizedCollection('talks', locale);
+    const projects = await getLocalizedCollection('projects', locale);
+    const posts = await getLocalizedCollection('posts', locale);
+    const teaching = await getLocalizedCollection('teaching', locale);
 
     const allEntries = [...publications, ...talks, ...projects, ...posts, ...teaching];
     const tags: Record<string, number> = {};
@@ -25,14 +26,14 @@ export async function getAllTags() {
         .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-export async function getContentByTag(tag: string) {
+export async function getContentByTag(tag: string, locale: Locale = "es") {
     const normalizedSearchTag = tag.toLowerCase();
 
-    const publications = await getCollection('publications');
-    const talks = await getCollection('talks');
-    const projects = await getCollection('projects');
-    const posts = await getCollection('posts');
-    const teaching = await getCollection('teaching');
+    const publications = await getLocalizedCollection('publications', locale);
+    const talks = await getLocalizedCollection('talks', locale);
+    const projects = await getLocalizedCollection('projects', locale);
+    const posts = await getLocalizedCollection('posts', locale);
+    const teaching = await getLocalizedCollection('teaching', locale);
 
     const filterFn = (entry: any) => {
         const entryTags = (entry.data as any).tags || [];

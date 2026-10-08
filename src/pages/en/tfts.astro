@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../utils/i18n";
+
+const { tfts } = getTranslations("en").pages;
+
+const areas = [
+	{
+		title: "Mental health and emotional well-being",
+		proposals: [
+			{
+				title: "Detecting signals of stress and well-being in text",
+				description: "Apply natural language processing and machine learning to identify emotional indicators in text, and study model robustness and explainability.",
+			},
+			{
+				title: "Agent-based simulation of health interventions",
+				description: "Design an agent-based simulation to compare potential well-being interventions and policies, analysing their effects across different population groups.",
+			},
+			{
+				title: "Emotion-aware virtual assistants",
+				description: "Explore how language models and environmental adaptation can be combined to create personalised support systems, and evaluate their behaviour in controlled scenarios.",
+			},
+			{
+				title: "Virtual reality for clinical training",
+				description: "Prototype virtual reality experiences for training or controlled exposure, and analyse how interaction and context affect emotional experience.",
+			},
+		],
+	},
+	{
+		title: "Art and emotion",
+		proposals: [
+			{
+				title: "Recommending artworks in relation to mood",
+				description: "Build a recommender connecting visual and emotional features of artworks with people's preferences, and compare personalisation strategies.",
+			},
+			{
+				title: "Can AI recognise emotional nuance in art?",
+				description: "Compare vision and language models on their emotional interpretation of artworks, identifying where their judgements align with people and where they differ.",
+			},
+			{
+				title: "Music recommendation for emotional regulation",
+				description: "Investigate music recommendation methods that account for a person's context and emotional goals.",
+			},
+		],
+	},
+	{
+		title: "Urban planning and mobility",
+		proposals: [
+			{
+				title: "Optimising shared-vehicle fleets",
+				description: "Use mobility data and optimisation or machine-learning methods to improve shared-vehicle distribution as demand changes.",
+			},
+			{
+				title: "Simulating interventions in urban environments",
+				description: "Build an agent-based simulation to study how different urban-planning decisions may affect mobility and access to services.",
+			},
+		],
+	},
+	{
+		title: "Sports and physical activity",
+		proposals: [
+			{
+				title: "Predicting performance from physical-activity data",
+				description: "Analyse activity data to develop performance-prediction models and investigate which variables provide useful, interpretable information.",
+			},
+			{
+				title: "Personalised training plans",
+				description: "Explore optimisation and machine-learning methods to adapt training plans to each person's progress, goals, and availability.",
+			},
+		],
+	},
+];
+---
+
+<BaseLayout title={tfts.title} description={tfts.subtitle} lang="en">
+	<header class="page-header">
+		<h1 class="page-title">{tfts.title}</h1>
+		<p class="page-subtitle">{tfts.subtitle}</p>
+	</header>
+	<div class="container-narrow">
+		<p class="prose mb-12">
+			These ideas are starting points: the scope and methods can be adapted to each student's interests and project level.
+		</p>
+		{areas.map((area) => (
+			<section class="section">
+				<h2 class="section-title border-b border-border pb-2">{area.title}</h2>
+				<ul class="space-y-6">
+					{area.proposals.map((proposal) => (
+						<li>
+							<h3 class="font-semibold text-foreground">{proposal.title}</h3>
+							<p class="text-text-muted mt-1">{proposal.description}</p>
+						</li>
+					))}
+				</ul>
+			</section>
+		))}
+		<p class="prose mt-12">
+			If a proposal interests you, or you have a related idea, feel free to get in touch. You can also browse <a href="https://www.gsi.upm.es/es/investigacion/publicaciones">previous GSI projects</a>.
+		</p>
+	</div>
+</BaseLayout>

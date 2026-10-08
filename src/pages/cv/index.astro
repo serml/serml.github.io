@@ -1,14 +1,18 @@
 ---
-import { getEntry, render } from "astro:content";
+import { render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Timeline from "../../components/ui/Timeline.astro";
 import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
+import { getLocalizedEntry } from "../../utils/content";
+
+const { pages, ui } = getTranslations("es");
 
 if (PAGES.cv.isActive === false) {
     return Astro.redirect("/404");
 }
 
-const cvEntry = await getEntry("cv", "cv");
+const cvEntry = await getLocalizedEntry("cv", "cv", "es");
 if (!cvEntry) {
     throw new Error(
         "CV content not found. Please ensure src/content/cv.md exists.",
@@ -19,10 +23,10 @@ const { Content } = await render(cvEntry);
 const { name, title, experience = [], education = [] } = cvEntry.data;
 ---
 
-<BaseLayout title={PAGES.cv.title}>
+<BaseLayout title={pages.cv.title}>
     <header class="page-header">
-        <h1 class="page-title">{PAGES.cv.title}</h1>
-        <p class="page-subtitle">{PAGES.cv.subtitle}</p>
+        <h1 class="page-title">{pages.cv.title}</h1>
+        <p class="page-subtitle">{pages.cv.subtitle}</p>
     </header>
 
     <div class="container-narrow">
@@ -30,7 +34,7 @@ const { name, title, experience = [], education = [] } = cvEntry.data;
             experience.length > 0 && (
                 <section class="section">
                     <h2 class="section-title border-b border-border pb-2">
-                        Professional Experience
+                        {ui.professionalExperience}
                     </h2>
                     <Timeline items={experience.map(exp => ({
                         title: exp.role,
@@ -46,7 +50,7 @@ const { name, title, experience = [], education = [] } = cvEntry.data;
             education.length > 0 && (
                 <section class="section">
                     <h2 class="section-title border-b border-border pb-2">
-                        Education
+                        {ui.education}
                     </h2>
                     <Timeline items={education.map(edu => ({
                         title: edu.degree,
@@ -64,4 +68,3 @@ const { name, title, experience = [], education = [] } = cvEntry.data;
         </div>
     </div>
 </BaseLayout>
-

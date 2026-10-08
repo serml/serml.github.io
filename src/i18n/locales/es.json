@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "about": "Sobre mí",
+    "publications": "Publicaciones",
+    "talks": "Actividad académica",
+    "tfts": "TFTs",
+    "teaching": "Docencia",
+    "projects": "Proyectos",
+    "blog": "Blog",
+    "tags": "Etiquetas",
+    "cv": "CV"
+  },
+  "pages": {
+    "home": {
+      "title": "Sobre mí",
+      "subtitle": ""
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": ""
+    },
+    "publications": {
+      "title": "Publicaciones",
+      "subtitle": "Artículos de investigación y publicaciones científicas."
+    },
+    "talks": {
+      "title": "Actividad académica",
+      "subtitle": "Charlas, congresos y participación editorial."
+    },
+    "tfts": {
+      "title": "TFTs",
+      "subtitle": "Propuestas orientativas de trabajos fin de titulación, adaptables a los intereses de cada estudiante."
+    },
+    "projects": {
+      "title": "Proyectos",
+      "subtitle": "Aplicaciones y otros proyectos desarrollados en mi tiempo libre."
+    },
+    "teaching": {
+      "title": "Docencia",
+      "subtitle": "Cursos académicos y materiales educativos."
+    },
+    "tags": {
+      "title": "Etiquetas",
+      "subtitle": "Explora el contenido por tema."
+    },
+    "cv": {
+      "title": "Currículum",
+      "subtitle": "Trayectoria académica y profesional."
+    }
+  },
+  "profile": {
+    "shortBio": "Profesor en la Universidad Politécnica de Madrid"
+  },
+  "collectionNames": {
+    "posts": "blog",
+    "projects": "proyectos",
+    "talks": "actividad académica",
+    "teaching": "docencia",
+    "publications": "publicaciones"
+  },
+  "siteDescription": "Profesor e investigador en inteligencia artificial en la UPM y miembro del GSI. Investigo IA aplicada a la salud mental, el procesamiento del lenguaje natural y los sistemas basados en agentes.",
+  "ui": {
+    "newer": "Más recientes",
+    "older": "Anteriores",
+    "page": "Página",
+    "of": "de",
+    "backTo": "Volver a",
+    "viewExternal": "Ver enlace externo",
+    "projectDetails": "Ver proyecto",
+    "mobileApp": "Aplicación móvil",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "talksAndPresentations": "Charlas y presentaciones",
+    "guestEditing": "Guest Editor",
+    "specialIssue": "Número especial",
+    "submissionDeadline": "Fecha límite de envío",
+    "guestEditors": "Guest Editors",
+    "affiliation": "Afiliación",
+    "researchInterests": "Áreas de interés",
+    "topicsOfInterest": "Temas de interés",
+    "callForPapers": "Consulta la convocatoria y envía tu artículo",
+    "date": "Fecha",
+    "author": "Autoría",
+    "journal": "Revista",
+    "event": "Evento",
+    "institution": "Institución",
+    "info": "Información",
+    "professionalExperience": "Experiencia profesional",
+    "education": "Formación académica",
+    "taggedWith": "Contenido con la etiqueta",
+    "uniqueTopics": "temas únicos",
+    "noTags": "Todavía no hay etiquetas en el contenido.",
+    "previousPost": "Entrada anterior",
+    "nextPost": "Entrada siguiente",
+    "minRead": "min de lectura",
+    "switchLanguage": "Cambiar idioma",
+    "pageNotFound": "Página no encontrada",
+    "goBack": "Volver",
+    "returnHome": "Volver al inicio",
+    "builtWith": "Creado con",
+    "toggleTheme": "Cambiar tema oscuro",
+    "developerTools": "Herramientas de desarrollo",
+    "share": "Compartir:",
+    "shareOnTwitter": "Compartir en Twitter",
+    "shareOnFacebook": "Compartir en Facebook",
+    "shareOnLinkedIn": "Compartir en LinkedIn",
+    "shareByEmail": "Compartir por correo electrónico",
+    "thesis": "Tesis"
+  }
+}

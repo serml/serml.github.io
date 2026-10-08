@@ -1,6 +1,9 @@
 ---
+lang: "en"
+translationKey: "thesus-mouse"
 title: "Theseus Maze-Solving Machine"
 description: "The first machine that demonstrated machine learning capabilities through maze navigation. Built with telephone relay circuits in 1950."
+published: false
 tags:
   - "AI"
   - "Robotics"

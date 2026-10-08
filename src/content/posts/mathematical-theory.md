@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "mathematical-theory"
 title: "A Mathematical Theory of Communication"
 date: "1948-07-01"
 description: "The seminal paper that established information theory as a new field of study. Introduced the concept of entropy and channel capacity."

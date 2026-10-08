@@ -1,10 +1,12 @@
 ---
 import Tag from "./Tag.astro";
 import Icon from "./Icon.astro";
+import { getLocale, getTranslations } from "../../utils/i18n";
 
 interface Props {
     title: string;
     href: string;
+    titleTarget?: string;
     description?: string;
     date?: string;
     authors?: string;
@@ -13,12 +15,13 @@ interface Props {
     externalUrl?: string;
 }
 
-const { title, href, description, date, authors, extraInput, tags, externalUrl } = Astro.props;
+const { title, href, titleTarget, description, date, authors, extraInput, tags, externalUrl } = Astro.props;
+const { ui } = getTranslations(getLocale(Astro.url.pathname));
 ---
 
 <article class="card">
     <div class="card-content">
-        <a href={href} class="card-title">{title}</a>
+        <a href={href} target={titleTarget} rel={titleTarget === "_blank" ? "noopener noreferrer" : undefined} class="card-title">{title}</a>
 
         <div class="card-meta">
             {date && (
@@ -58,7 +61,7 @@ const { title, href, description, date, authors, extraInput, tags, externalUrl }
         externalUrl && (
             <div class="flex-shrink-0">
                 <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="card-link">
-                    View
+                    {ui.viewExternal}
                 </a>
             </div>
         )

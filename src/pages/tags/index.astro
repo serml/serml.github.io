@@ -3,8 +3,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllTags } from "../../utils/tags";
 import Tag from "../../components/ui/Tag.astro";
 import ContentHeader from "../../components/content/ContentHeader.astro";
+import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
+
+if (PAGES.tags.isActive === false) {
+    return Astro.redirect("/404");
+}
 
 const tags = await getAllTags();
+const { pages, ui } = getTranslations("es");
 
 const maxCount = Math.max(...tags.map((t) => t.count));
 const minCount = Math.min(...tags.map((t) => t.count));
@@ -21,11 +28,11 @@ function getTagSize(count: number): "sm" | "md" | "lg" {
 }
 ---
 
-<BaseLayout title="Tags">
+<BaseLayout title={pages.tags.title}>
     <div class="content-container">
         <ContentHeader
-            title="Tags"
-            meta={[{ value: `${tags.length} unique topics` }]}
+            title={pages.tags.title}
+            meta={[{ value: `${tags.length} ${ui.uniqueTopics}` }]}
         />
 
         <div class="container-narrow pt-12">
@@ -46,7 +53,7 @@ function getTagSize(count: number): "sm" | "md" | "lg" {
             {
                 tags.length === 0 && (
                     <p class="text-center text-text-muted mt-20 font-mono italic">
-                        No tags found in your content yet.
+                        {ui.noTags}
                     </p>
                 )
             }

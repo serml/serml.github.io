@@ -1,6 +1,9 @@
 ---
+lang: "en"
+translationKey: "electromagnetic-synchronizer"
 title: "Electromagnetic Synchronizer"
 description: "An early project from my undergraduate days at MIT. A device to synchronize electromagnetic signals for communication systems."
+published: false
 tags:
   - "Engineering"
   - "Hardware"

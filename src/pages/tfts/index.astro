@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../utils/i18n";
+
+const { tfts } = getTranslations("es").pages;
+
+const areas = [
+	{
+		title: "Salud mental y bienestar emocional",
+		proposals: [
+			{
+				title: "Detección de señales de estrés y bienestar en textos",
+				description: "Aplicar procesamiento del lenguaje natural y aprendizaje automático para identificar indicadores emocionales en textos, y estudiar la robustez y explicabilidad de los modelos.",
+			},
+			{
+				title: "Simulación de intervenciones de salud mediante agentes",
+				description: "Diseñar un sistema de simulación basado en agentes para comparar posibles intervenciones y políticas de bienestar, analizando sus efectos en distintos grupos de población.",
+			},
+			{
+				title: "Asistentes virtuales sensibles al contexto emocional",
+				description: "Explorar cómo combinar modelos de lenguaje y adaptación del entorno para crear sistemas de apoyo personalizados, y evaluar su comportamiento en escenarios controlados.",
+			},
+			{
+				title: "Realidad virtual para formación clínica",
+				description: "Prototipar experiencias de realidad virtual para formación o exposición controlada y analizar cómo la interacción y el contexto afectan a la experiencia emocional.",
+			},
+		],
+	},
+	{
+		title: "Arte y emoción",
+		proposals: [
+			{
+				title: "Recomendación de obras de arte según su relación con el estado de ánimo",
+				description: "Crear un recomendador que relacione características visuales y emocionales de obras con las preferencias de las personas, y estudiar diferentes estrategias de personalización.",
+			},
+			{
+				title: "¿Puede la IA reconocer matices emocionales en el arte?",
+				description: "Comparar modelos de visión y lenguaje en la interpretación emocional de obras, identificando en qué casos coinciden con las valoraciones humanas y dónde fallan.",
+			},
+			{
+				title: "Recomendación musical para la regulación emocional",
+				description: "Investigar métodos de recomendación musical que tengan en cuenta el contexto y los objetivos emocionales de cada persona.",
+			},
+		],
+	},
+	{
+		title: "Urbanismo y movilidad",
+		proposals: [
+			{
+				title: "Optimización de flotas de vehículos compartidos",
+				description: "Utilizar datos de movilidad y técnicas de optimización o aprendizaje automático para mejorar la distribución de vehículos compartidos ante patrones cambiantes de demanda.",
+			},
+			{
+				title: "Simulación de intervenciones en entornos urbanos",
+				description: "Construir una simulación basada en agentes para estudiar cómo distintas decisiones urbanísticas pueden afectar a la movilidad y al acceso a servicios.",
+			},
+		],
+	},
+	{
+		title: "Deporte y actividad física",
+		proposals: [
+			{
+				title: "Predicción del rendimiento a partir de datos de actividad física",
+				description: "Analizar datos de actividad para desarrollar modelos de predicción del rendimiento y estudiar qué variables ofrecen información útil y comprensible.",
+			},
+			{
+				title: "Planificación personalizada de entrenamientos",
+				description: "Explorar técnicas de optimización y aprendizaje automático para adaptar planes de entrenamiento a la evolución, objetivos y disponibilidad de cada persona.",
+			},
+		],
+	},
+];
+---
+
+<BaseLayout title={tfts.title} description={tfts.subtitle}>
+	<header class="page-header">
+		<h1 class="page-title">{tfts.title}</h1>
+		<p class="page-subtitle">{tfts.subtitle}</p>
+	</header>
+	<div class="container-narrow">
+		<p class="prose mb-12">
+			Estas ideas son puntos de partida: el alcance y la metodología pueden adaptarse a los intereses de cada estudiante y al nivel del trabajo.
+		</p>
+		{areas.map((area) => (
+			<section class="section">
+				<h2 class="section-title border-b border-border pb-2">{area.title}</h2>
+				<ul class="space-y-6">
+					{area.proposals.map((proposal) => (
+						<li>
+							<h3 class="font-semibold text-foreground">{proposal.title}</h3>
+							<p class="text-text-muted mt-1">{proposal.description}</p>
+						</li>
+					))}
+				</ul>
+			</section>
+		))}
+		<p class="prose mt-12">
+			Si te interesa alguna propuesta o tienes una idea relacionada, puedes escribirme. También puedes consultar los <a href="https://www.gsi.upm.es/es/investigacion/publicaciones">trabajos anteriores del GSI</a>.
+		</p>
+	</div>
+</BaseLayout>

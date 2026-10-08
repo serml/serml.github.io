@@ -1,28 +1,29 @@
 ---
-name: "Claude Shannon"
-avatar: "shannon.jpg"
-shortBio: "Mathematician and electrical engineer known as the 'Father of Information Theory'. Pioneer in digital computing and cryptography."
-institution: "MIT, Cambridge MA"
+name: "Sergio Muñoz"
+avatar: "sergio.png"
+shortBio: "Professor and researcher in artificial intelligence"
+institution: "UPM, Madrid"
+lang: "en"
+translationKey: "bio"
 ---
 
-I am a mathematician and electrical engineer best known for founding **Information Theory**. My work in the late 1940s established the theoretical foundations of modern digital communications and computing.
+I work as a professor at the Technical University of Madrid (UPM) and a member of the [Intelligent Systems Group (GSI)](https://www.gsi.upm.es/es/), where we work on artificial intelligence methods and applications. We also take part in several national and European projects, collaborating with other universities, research centers, and companies.
 
-## My Life
+## Research
 
-Born in Petoskey, Michigan on April 30, 1916, I showed an early aptitude for engineering and mathematics. After studying at the University of Michigan, I completed my PhD at MIT where I famously applied Boolean algebra to electrical circuits. My master's thesis on relay switching circuits is considered one of the most important master's theses ever written.
+My research focuses on applying artificial intelligence to health and well-being, especially mental health and emotional regulation. I also develop projects that connect AI with other personal interests, such as art, sports, and urban planning.
 
-During World War, I worked at Bell Labs on fire control systems and cryptography, which led to my seminal work in information theory.
+I mainly work with technologies such as machine learning, language models, agentic AI, natural language processing, agent-based simulation, and ambient intelligence.
 
-## Current Work
+## Teaching
 
-I continue to work on various problems at the intersection of mathematics, engineering, and computer science. My interests include artificial intelligence, pattern recognition, game theory, and the fundamental limits of computation.
+I teach several courses at the School of Telecommunications Engineering: “Programming Fundamentals” in the Biomedical Engineering degree; “Programming,” “Programming for Big Data,” “Non-Relational Databases,” and “Data and Services Engineering Projects” in the Data Engineering degree; and “Client-Side Web Technologies” and “Network Computing” in the Telecommunications Technologies and Services degree.
 
-I also enjoy juggling, unicycling, and playing the clarinet - I even built a juggling machine!
+I also supervise bachelor's and master's thesis projects in some of the areas I work on. Rather than starting with fixed proposals, we begin with open research topics that can be adapted to each student's interests to define a specific project:
 
-## Research Interests
+- Mental health and emotional well-being: detecting indicators of stress, depression, or anxiety; support systems using virtual assistants or environmental adaptation; virtual reality for clinical training and controlled exposure; simulation of health interventions and policies.
+- Art: recommending works to study their influence on mood; evaluating AI's ability to identify emotional nuances in art; music recommendation.
+- Urban planning: mobility analysis; optimizing shared-vehicle fleets; simulation to study interventions in urban environments.
+- Sports: performance prediction; physical activity data analysis; training optimization.
 
-My research focus includes: **Information Theory**, **Cryptography**, **Digital Computing**, **Artificial Intelligence**, **Game Theory**, and **Switching Circuits**.
-
----
-
-*"I am a mathematician. I am interested in the fundamental limits on the rate at which information can be transmitted."*
+If any of these topics interest you, or you have an idea inspired by them, feel free to get in touch and we can talk. For reference, you can see [previous GSI bachelor's and master's theses](https://www.gsi.upm.es/es/investigacion/publicaciones).

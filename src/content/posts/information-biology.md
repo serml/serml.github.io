@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "information-biology"
 title: "Information Theory and Biology"
 date: "1953-04-01"
 description: "Exploring the application of information theory to biological systems and genetics, pioneering the field of bioinformatics."

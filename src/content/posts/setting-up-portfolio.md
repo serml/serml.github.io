@@ -1,4 +1,6 @@
 ---
+lang: "en"
+translationKey: "setting-up-portfolio"
 title: "Setting up Your Academic Portfolio"
 date: "2026-04-28"
 description: "A comprehensive guide on how to clone, configure, and deploy your new academic portfolio."

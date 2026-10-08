@@ -1,0 +1,42 @@
+---
+interface Props {
+	className?: string;
+}
+
+const { className } = Astro.props;
+const isSpanish = !Astro.url.pathname.startsWith("/en/");
+const artworkLabel = isSpanish ? "ARTE · MEMORIA · LUGARES" : "ART · MEMORY · PLACES";
+const archiveLabel = isSpanish ? "TU COLECCIÓN PERSONAL DE ARTE" : "YOUR PERSONAL ART COLLECTION";
+---
+
+<div class:list={["project-artwork", className]} aria-hidden="true">
+	<div class="project-artwork-heading">
+		<span class="project-artwork-wordmark">MUSEA</span>
+		<span class="project-artwork-edition">{artworkLabel}</span>
+	</div>
+	<div class="project-artwork-gallery">
+		<div class="project-artwork-frame project-artwork-frame-main">
+			<div class="project-artwork-image project-artwork-image-sunset">
+				<span class="project-artwork-sun"></span>
+				<span class="project-artwork-hill project-artwork-hill-back"></span>
+				<span class="project-artwork-hill project-artwork-hill-front"></span>
+			</div>
+		</div>
+		<div class="project-artwork-frame project-artwork-frame-side">
+			<div class="project-artwork-image project-artwork-image-still-life">
+				<span class="project-artwork-vase"></span>
+				<span class="project-artwork-leaf project-artwork-leaf-one"></span>
+				<span class="project-artwork-leaf project-artwork-leaf-two"></span>
+			</div>
+		</div>
+		<div class="project-artwork-frame project-artwork-frame-small">
+			<div class="project-artwork-image project-artwork-image-blue">
+				<span class="project-artwork-blue-shape"></span>
+			</div>
+		</div>
+	</div>
+	<div class="project-artwork-footer">
+		<span>{archiveLabel}</span>
+		<span class="project-artwork-monogram">M</span>
+	</div>
+</div>

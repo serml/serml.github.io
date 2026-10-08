@@ -1,120 +1,58 @@
-# 🎓 Academic Portfolio Astro
+# Portafolio académico de Sergio Muñoz
 
-[![Astro](https://img.shields.io/badge/ASTRO-FF5D01?style=for-the-badge&logo=astro&logoColor=white)](https://astro.build/)
-[![Tailwind](https://img.shields.io/badge/TAILWIND-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/MIT-44CC11?style=for-the-badge)](https://opensource.org/license/mit)
+Sitio web personal de **Sergio Muñoz**, profesor e investigador en inteligencia artificial en la Universidad Politécnica de Madrid (UPM) y miembro del Grupo de Sistemas Inteligentes (GSI).
 
-![Page Screenshot](public/main_page.jpg)
+🌐 **Web:** [serml.github.io](https://serml.github.io/)
 
-A fast, minimalist, and highly customizable Astro template designed specifically for researchers, professors, PhD students, and academics. 
+El sitio está disponible en español e inglés e incluye información sobre investigación, publicaciones, charlas, actividad editorial, proyectos y propuestas de TFT.
 
-Strongly inspired by [Academic Pages](https://github.com/academicpages/academicpages.github.io) and [AstroPaper](https://github.com/satnaing/astro-paper), this template prioritizes content readability, SEO discoverability, and ease of configuration without touching the UI code.
+## Desarrollo local
 
-> 🌟 **[View the Live Demo](https://astro-academics-page.vercel.app/)**
+Requisitos: Node.js **22.12.0 o superior**.
 
-## ✨ Features
-
-- **Markdown-Driven Collections:** Easily manage your `Bio`, `Blog`, `Publications`, `Projects`, `Talks`, `CV`, and `Teaching` experience purely through `.md` files, **no programming knowledge required**.
-- **Academic Standard Support:** Out-of-the-box $\LaTeX$ rendering support via `remark-math`/`rehype-katex`.
-- **Extensive Theming System:** Built-in Light/Dark mode toggle with a highly customizable underlying design system and several preset color palettes.
-- **Toggleable Sections:** Don't need a "Talks" or "Teaching" section? Disable them globally with a single boolean flag in your config.
-- **Peak Performance:** Built with Astro and Tailwind CSS v4 (via `@tailwindcss/vite`), yielding near-perfect Lighthouse scores and minimal client-side JavaScript.
-- **Analytics:** Includes native configuration options for self-hosted Umami analytics (`umami.websiteId`), as well as GA4 support (`ga4Id`).
-- **Two-Column Architecture:** Optimized layout with a sticky left profile sidebar and a scrollable main content area.
-
-## 🚀 Getting Started
-
-### 1. Bootstrap the Repository
-
-**Via GitHub CLI (Recommended):**
-```bash
-gh repo create my-portfolio --template="rubzip/academic-portfolio-astro" --clone
-cd my-portfolio
-```
-
-**Via Standard Git:**
-```bash
-git clone https://github.com/rubzip/academic-portfolio-astro.git my-portfolio
-cd my-portfolio
-```
-
-### 2. Install Dependencies
-This project uses Node.js (requires **Node.js >= 22.12.0**).
 ```bash
 npm install
-```
-
-### 3. Start Development Server
-```bash
 npm run dev
 ```
-Your local server will start at `http://localhost:4321`.
 
-## 📂 Architecture & Structure
+El servidor local estará disponible en `http://localhost:4321`.
 
-This project follows a centralized configuration architecture and is driven entirely by Markdown/MDX content.
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el servidor de desarrollo. |
+| `npm run build` | Genera el sitio estático en `dist/`. |
+| `npm run preview` | Sirve localmente la compilación de producción. |
+
+## Contenido y estructura
+
+La mayoría del contenido se mantiene en Markdown con metadatos YAML:
 
 ```text
-/
-├── public/                 # Static assets (images, favicon, robots.txt)
-├── src/
-│   ├── assets/             # Global icons (`icons.ts`)
-│   ├── components/         # Reusable Astro UI components (Tailwind classes used for styling)
-│   ├── config/             # ⚙️ ALL GLOBAL CONFIGURATION LIVES HERE
-│   │   ├── site.ts         # Meta details & Analytics (SITE, THEME_CONFIG, SETTINGS)
-│   │   ├── pages.ts        # Enable/Disable sections & subtitles (PAGES)
-│   │   ├── themes.ts       # Color palettes
-│   │   ├── navigation.ts   # Navbar links (NAV_LINKS)
-│   │   └── social.ts       # Social media links (SOCIALS)
-│   ├── content/            # 📝 ALL MARKDOWN CONTENT LIVES HERE
-│   │   ├── bio.md
-│   │   ├── cv.md
-│   │   ├── posts/
-│   │   ├── projects/
-│   │   ├── publications/
-│   │   ├── talks/
-│   │   └── teaching/
-│   ├── layouts/            # Page layout wrappers
-│   ├── pages/              # Astro routing
-│   ├── styles/             # Global CSS (`global.css` - Theme colors, base styles)
-│   └── types/              # TypeScript interfaces (content, display, config, themes)
-└── content.config.ts       # Zod schemas for all markdown collections
+src/
+├── config/                 # Configuración del sitio, páginas y navegación
+├── content/
+│   ├── bio.md              # Biografía en inglés
+│   ├── bio.es.md           # Biografía en español
+│   ├── publications/       # Publicaciones
+│   ├── talks/              # Charlas y presentaciones
+│   ├── projects/           # Proyectos
+│   └── posts/              # Entradas del blog
+├── pages/
+│   ├── editorial/          # Actividad editorial
+│   ├── tfts/               # Propuestas de TFT
+│   └── en/                 # Rutas y páginas en inglés
+└── styles/global.css       # Estilos y temas
 ```
 
-## 📖 Documentation & Setup
+La navegación y la visibilidad de las secciones se configuran en `src/config/navigation.ts` y `src/config/pages.ts`. La configuración general, incluido el tema y los enlaces sociales, está en `src/config/site.ts` y `src/config/social.ts`.
 
-For a comprehensive, step-by-step guide on how to configure your site, modify the design, and write new content, please refer to the dedicated setup post included in this template:
+## Tecnologías
 
-**👉 [Setting up Your Academic Portfolio](src/content/posts/setting-up-portfolio.md)**
+- [Astro](https://astro.build/) con salida estática.
+- Tailwind CSS v4 y TypeScript.
+- Contenido Markdown y renderizado de fórmulas con KaTeX.
+- Temas claro y oscuro.
 
+## Licencia
 
-## 📋 Configuration
-
-All configuration is managed centrally in the `src/config` directory. Modify these files to personalize your portfolio without touching any UI code:
-
-| File | Purpose |
-| :--- | :--- |
-| [`pages.ts`](src/config/pages.ts) | Enable/disable entire sections (e.g., `talks`, `teaching`) and set page subtitles. |
-| [`themes.ts`](src/config/themes.ts) | Define and manage all color palettes. Use `THEME_CONFIG` in `site.ts` to apply. |
-| [`site.ts`](src/config/site.ts) | Manage metadata, analytics keys (Umami/GA4), and critical file paths. |
-| [`navigation.ts`](src/config/navigation.ts) | Define the primary navigation bar links. |
-| [`social.ts`](src/config/social.ts) | Configure social media links appearing in the footer and header. |
-
-
-## 🛠️ Build Commands
-
-All standard build commands run through `npm`:
-
-| Command | Action |
-| :--- | :--- |
-| `npm run dev` | Starts the local development server on `localhost:4321` |
-| `npm run build` | Builds your project for production output into `./dist/` |
-| `npm run preview` | Previews your production build locally |
-| `npm run format` | Runs Prettier on all files to format code |
-
-## 🤝 Contributing & License
-
-Contributions, issues, and feature requests are always welcome! Feel free to check the [issues page](https://github.com/rubzip/academic-portfolio-astro/issues).
-
-This project is licensed under the **MIT License** - see the `LICENSE` file for details.
+Este repositorio conserva la licencia MIT indicada en [`LICENSE`](LICENSE).

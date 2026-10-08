@@ -1,20 +1,20 @@
 ---
-import { getCollection } from "astro:content";
 import BaseListing from "../../layouts/BaseListing.astro";
-import { SITE, PAGES } from "../../config";
+import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
+
+const blogPage = getTranslations("es").pages.blog;
 
 if (PAGES.blog.isActive === false) {
     return Astro.redirect("/404");
 }
 
-export async function getStaticPaths({ paginate }: any) {
+export async function getStaticPaths() {
     if (PAGES.blog.isActive === false) return [];
-    const posts = await getCollection("posts");
-    const sortedPosts = posts.sort(
-        (a: any, b: any) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-    );
-
-    return paginate(sortedPosts, { pageSize: SITE.postPerPage });
+    return [{
+        params: { page: undefined },
+        props: { page: { data: [], currentPage: 1, lastPage: 1, url: {} } },
+    }];
 }
 
 const { page } = Astro.props;
@@ -22,7 +22,8 @@ const { page } = Astro.props;
 
 <BaseListing
     collection="posts"
-    title={PAGES.blog.title}
-    subtitle={PAGES.blog.subtitle}
+    title={blogPage.title}
+    subtitle={blogPage.subtitle}
     page={page}
+    robots="noindex, follow"
 />

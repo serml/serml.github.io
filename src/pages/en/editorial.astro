@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
+
+const { pages } = getTranslations("en");
+
+if (PAGES.editorial.isActive === false) {
+	return Astro.redirect("/en/talks/");
+}
+---
+
+<BaseLayout title={pages.editorial.title} description={pages.editorial.subtitle} lang="en">
+	<header class="page-header">
+		<h1 class="page-title">{pages.editorial.title}</h1>
+		<p class="page-subtitle">{pages.editorial.subtitle}</p>
+	</header>
+
+	<div class="container-narrow">
+		<article class="editorial-service-card">
+			<header class="editorial-service-header">
+				<div class="editorial-service-heading">
+					<p class="editorial-service-kicker">Special Issue · Guest Editor</p>
+					<h2>Advanced Machine Learning for Natural Language Processing: Methods and Applications</h2>
+				</div>
+				<div class="editorial-deadline">
+					<span>Submission deadline</span>
+					<strong>30 November 2026</strong>
+				</div>
+			</header>
+
+			<div class="editorial-service-body">
+				<div class="editorial-editors">
+					<div>
+						<span class="editorial-label">Guest Editors</span>
+						<p><strong>Prof. Carlos Á. Iglesias</strong><br /><a href="mailto:carlosangel.iglesias@upm.es">carlosangel.iglesias@upm.es</a></p>
+						<p><strong>Dr. Sergio Muñoz</strong><br /><a href="mailto:sergio.munoz@upm.es">sergio.munoz@upm.es</a></p>
+					</div>
+					<div>
+						<span class="editorial-label">Affiliation</span>
+						<p>Intelligent Systems Group (GSI), ETSI Telecomunicación, Technical University of Madrid (UPM), Madrid, Spain.</p>
+						<span class="editorial-label">Research interests</span>
+						<p>Agents, natural language processing, mental health, machine learning, and edge AI.</p>
+					</div>
+				</div>
+
+				<div class="editorial-service-summary prose">
+					<p>This special issue brings together research on advanced machine-learning methods for natural language processing and their applications. It welcomes theoretical and applied contributions with empirical validation, benchmarks, or reproducible methodologies.</p>
+					<h3>Topics of interest</h3>
+					<ul>
+						<li>Foundation models and large language models, including efficient adaptation.</li>
+						<li>Robustness, bias mitigation, and responsible AI in language technologies.</li>
+						<li>Multilingual NLP, transfer learning, and domain adaptation.</li>
+						<li>Explainable and ethical NLP systems, multimodal integration, and model evaluation.</li>
+					</ul>
+					<a class="editorial-issue-link" href="https://www.techscience.com/cmc/special_detail/natural-language-processing" target="_blank" rel="noopener noreferrer">
+						View the call for papers and submit your paper <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</div>
+		</article>
+	</div>
+</BaseLayout>

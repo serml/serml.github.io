@@ -1,8 +1,12 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import BaseItemCard from "../components/ui/BaseItemCard.astro";
+import ProjectShowcaseCard from "../components/content/ProjectShowcaseCard.astro";
+import GuestEditorCard from "../components/content/GuestEditorCard.astro";
 import { getListingItem } from "../utils/adapters";
+import type { Locale } from "../utils/i18n";
+import { getTranslations, localizedPath } from "../utils/i18n";
+import { getContentSlug, getLocalizedCollection } from "../utils/content";
 
 interface Props {
     collection: "publications" | "talks" | "projects" | "posts" | "teaching" | "all";
@@ -10,21 +14,24 @@ interface Props {
     subtitle?: string;
     entries?: any[];
     page?: any;
+    lang?: Locale;
+    robots?: "index, follow" | "noindex, follow" | "noindex, nofollow";
 }
 
-const { collection, title, subtitle, entries: manualEntries, page } = Astro.props;
+const { collection, title, subtitle, entries: manualEntries, page, lang = "es", robots = "index, follow" } = Astro.props;
+const { ui, siteDescription } = getTranslations(lang);
 
-let entries = manualEntries || (collection !== "all" ? await getCollection(collection as any) : []);
+let entries = manualEntries || (collection !== "all" ? await getLocalizedCollection(collection as any, lang) : []);
 if (page) entries = page.data;
 
 const sortedEntries = entries.sort((a: any, b: any) => {
     const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
     const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-    return dateB - dateA;
+    return dateB - dateA || (a.data.sortOrder ?? 0) - (b.data.sortOrder ?? 0);
 });
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} lang={lang} description={subtitle || siteDescription} robots={robots}>
     {(title || subtitle) && (
         <header class="page-header">
             {title && <h1 class="page-title">{title}</h1>}
@@ -32,25 +39,53 @@ const sortedEntries = entries.sort((a: any, b: any) => {
         </header>
     )}
 
+    {collection === "talks" && (
+        <section class="academic-editorial-section">
+            <h2 class="activity-subsection-title">{ui.guestEditing}</h2>
+            <GuestEditorCard lang={lang} />
+        </section>
+    )}
+
+    {collection === "talks" && <h2 class="activity-subsection-title">{ui.talksAndPresentations}</h2>}
     <section class="item-list">
         {sortedEntries.map((entry: any) => {
-            const item = getListingItem(entry);
-            return <BaseItemCard {...item} href={`/${collection}/${entry.id}`} />;
+            const item = getListingItem(entry, collection, lang);
+            const publicationDoi = collection === "publications" ? item.externalUrl : undefined;
+            return (
+                collection === "projects" ? (
+                    <ProjectShowcaseCard
+                        title={item.title}
+                        description={item.description}
+                        tags={item.tags}
+                        detailHref={localizedPath(`/projects/${getContentSlug(entry)}`, lang)}
+                        appStoreUrl={entry.data.app_store_url}
+                        googlePlayUrl={entry.data.google_play_url}
+                        lang={lang}
+                    />
+                ) : (
+                    <BaseItemCard
+                        {...item}
+                        href={publicationDoi || localizedPath(`/${collection}/${getContentSlug(entry)}`, lang)}
+                        titleTarget={publicationDoi ? "_blank" : undefined}
+                        externalUrl={collection === "publications" ? undefined : item.externalUrl}
+                    />
+                )
+            );
         })}
     </section>
 
     {page && page.lastPage > 1 && (
         <nav class="pagination">
             {page.url.prev ? (
-                <a href={page.url.prev} class="pagination-link">Newer</a>
+                <a href={localizedPath(page.url.prev, lang)} class="pagination-link">{ui.newer}</a>
             ) : (
-                <span class="pagination-inactive">Newer</span>
+                <span class="pagination-inactive">{ui.newer}</span>
             )}
-            <span class="pagination-info">Page {page.currentPage} of {page.lastPage}</span>
+            <span class="pagination-info">{ui.page} {page.currentPage} {ui.of} {page.lastPage}</span>
             {page.url.next ? (
-                <a href={page.url.next} class="pagination-link">Older</a>
+                <a href={localizedPath(page.url.next, lang)} class="pagination-link">{ui.older}</a>
             ) : (
-                <span class="pagination-inactive">Older</span>
+                <span class="pagination-inactive">{ui.older}</span>
             )}
         </nav>
     )}

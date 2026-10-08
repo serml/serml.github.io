@@ -1,8 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getLocale, getTranslations } from "../utils/i18n";
+
+const { ui } = getTranslations(getLocale(Astro.url.pathname));
 ---
 
-<BaseLayout title="404: Page Not Found">
+<BaseLayout title={`404: ${ui.pageNotFound}`} robots="noindex, nofollow">
     <div
         class="flex flex-col items-center justify-center min-h-[50vh] text-center px-4"
     >
@@ -13,15 +16,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </h1>
         <p
             class="text-2xl font-bold text-foreground mb-8 opacity-80"
-            aria-label="page not found"
+            aria-label={ui.pageNotFound}
         >
-            Page Not Found
+            {ui.pageNotFound}
         </p>
         <button
             onclick="history.back()"
             class="text-lg font-semibold text-accent hover:underline decoration-2 underline-offset-8 transition-all duration-200 cursor-pointer bg-transparent border-none p-0"
         >
-            Go back
+            {ui.goBack}
         </button>
     </div>
 </BaseLayout>

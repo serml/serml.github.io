@@ -1,12 +1,13 @@
 ---
 import BaseListing from "../../layouts/BaseListing.astro";
 import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
 
 if (PAGES.teaching.isActive === false) {
     return Astro.redirect("/404");
 }
 
-const { title, subtitle } = PAGES.teaching;
+const { title, subtitle } = getTranslations("es").pages.teaching;
 ---
 
 <BaseListing collection="teaching" title={title} subtitle={subtitle} />

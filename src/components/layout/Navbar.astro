@@ -1,7 +1,22 @@
 ---
 import { NAV_LINKS, PAGES } from "../../config";
+import { getLocale, getTranslations, localizedPath } from "../../utils/i18n";
 
 const currentPath = Astro.url.pathname;
+const locale = getLocale(currentPath);
+const { nav, ui } = getTranslations(locale);
+const labels: Record<string, string> = {
+    "/": nav.about,
+    "/publications": nav.publications,
+    "/talks": nav.talks,
+    "/tfts": nav.tfts,
+    "/teaching": nav.teaching,
+    "/projects": nav.projects,
+    "/posts": nav.blog,
+    "/tags": nav.tags,
+    "/cv": nav.cv,
+};
+const unprefixedPath = currentPath.replace(/^\/en(?=\/|$)/, "") || "/";
 ---
 
 <nav class="navbar">
@@ -13,24 +28,38 @@ const currentPath = Astro.url.pathname;
                     ? "home"
                     : link.href.split("/").filter(Boolean)[0];
                 const pageConfig = (PAGES as any)[pageKey];
-                return link.isActive !== false && pageConfig?.active !== false;
+                return link.isActive !== false && pageConfig?.isActive !== false;
             }).map((link) => (
                 <li>
                     <a
-                        href={link.href}
+                        href={localizedPath(link.href, locale)}
                         class={`nav-link ${
-                            currentPath === link.href ||
-                            (link.href !== "/" &&
-                                currentPath.startsWith(link.href))
+                            unprefixedPath === link.href ||
+                            (link.href !== "/" && unprefixedPath.startsWith(link.href))
                                 ? "active"
                                 : "inactive"
                         }`}
                     >
-                        {link.label}
+                        {labels[link.href]}
                         <span class="nav-link-line" />
                     </a>
                 </li>
             ))
         }
+        <li class="nav-language-switch flex items-center gap-1 pl-2" aria-label={ui.switchLanguage}>
+            <a
+                href={localizedPath(currentPath, "es")}
+                lang="es"
+                aria-current={locale === "es" ? "page" : undefined}
+                class={`nav-link ${locale === "es" ? "active" : "inactive"}`}
+            >ES</a>
+            <span aria-hidden="true" class="text-text-muted">/</span>
+            <a
+                href={localizedPath(currentPath, "en")}
+                lang="en"
+                aria-current={locale === "en" ? "page" : undefined}
+                class={`nav-link ${locale === "en" ? "active" : "inactive"}`}
+            >EN</a>
+        </li>
     </ul>
 </nav>

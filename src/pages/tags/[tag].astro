@@ -3,9 +3,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import BaseItemCard from "../../components/ui/BaseItemCard.astro";
 import { getAllTags, getContentByTag } from "../../utils/tags";
 import { getListingItem } from "../../utils/adapters";
-import { SITE } from "../../config";
+import { PAGES } from "../../config";
+import { getTranslations, localizedPath } from "../../utils/i18n";
+import { getContentSlug } from "../../utils/content";
+
+const { ui } = getTranslations("es");
 
 export async function getStaticPaths() {
+    if (PAGES.tags.isActive === false) return [];
     const tags = await getAllTags();
     return tags.map((tag) => ({
         params: { tag: tag.name },
@@ -22,7 +27,7 @@ const content = await getContentByTag(tagName);
 <BaseLayout title={`#${tagName}`}>
     <header class="page-header">
         <h1 class="page-title">#{tagName}</h1>
-        <p class="page-subtitle">Content tagged with "{tagName}"</p>
+        <p class="page-subtitle">{ui.taggedWith} «{tagName}»</p>
     </header>
 
     <section class="item-list">
@@ -33,11 +38,14 @@ const content = await getContentByTag(tagName);
                 date: item.data.date,
                 authors: item.data.author,
                 extraInput: item.data.journal || item.data.event || item.data.institution,
+                externalUrl: item.data.doi ? `https://doi.org/${item.data.doi}` : item.data.external_url,
                 tags: item.data.tags,
-                externalUrl: item.data.external_url,
             };
-            const href = `/${item.collection}/${item.id}`;
-            return <BaseItemCard {...listingItem} href={href} />;
+            const isPublicationDoi = item.collection === "publications" && item.data.doi;
+            const href = isPublicationDoi
+                ? `https://doi.org/${item.data.doi}`
+                : localizedPath(`/${item.collection}/${getContentSlug(item)}`, "es");
+            return <BaseItemCard {...listingItem} href={href} titleTarget={isPublicationDoi ? "_blank" : undefined} externalUrl={isPublicationDoi ? undefined : listingItem.externalUrl} />;
         })}
     </section>
 </BaseLayout>

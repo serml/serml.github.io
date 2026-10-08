@@ -1,25 +1,28 @@
 ---
-import { getEntry, render } from "astro:content";
+import { render } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { PAGES } from "../config";
+import { getTranslations } from "../utils/i18n";
+import { getLocalizedBio } from "../utils/content";
+
+const { pages } = getTranslations("es");
 
 // Load bio content
-const bioEntry = await getEntry("bio", "bio");
+const bioEntry = await getLocalizedBio("es");
 const { Content: BioContent } = bioEntry
 	? await render(bioEntry)
 	: { Content: null };
 ---
 
-<BaseLayout title={PAGES.home.title}>
+<BaseLayout title={pages.home.title}>
 	<div class="container-narrow">
 		{
-			(PAGES.home.title || PAGES.home.subtitle) && (
+			(pages.home.title || pages.home.subtitle) && (
 				<header class="page-header">
-					{PAGES.home.title && (
-						<h1 class="page-title">{PAGES.home.title}</h1>
+					{pages.home.title && (
+						<h1 class="page-title">{pages.home.title}</h1>
 					)}
-					{PAGES.home.subtitle && (
-						<p class="page-subtitle">{PAGES.home.subtitle}</p>
+					{pages.home.subtitle && (
+						<p class="page-subtitle">{pages.home.subtitle}</p>
 					)}
 				</header>
 			)

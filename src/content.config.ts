@@ -2,13 +2,21 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'zod';
 
+const localizedFields = {
+    lang: z.enum(["es", "en"]).optional(),
+    translationKey: z.string().optional(),
+};
+
 const publications = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/publications" }),
     schema: z.object({
+        ...localizedFields,
         title: z.string(),
         author: z.string().optional(),
         date: z.string().optional(),
         journal: z.string().optional(),
+        sortOrder: z.number().optional(),
+        doi: z.string().optional(),
         external_url: z.string().optional(),
         image: z.string().optional(),
         description: z.string().optional(),
@@ -19,6 +27,7 @@ const publications = defineCollection({
 const talks = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/talks" }),
     schema: z.object({
+        ...localizedFields,
         title: z.string(),
         date: z.string().optional(),
         event: z.string().optional(),
@@ -32,6 +41,7 @@ const talks = defineCollection({
 const posts = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/posts" }),
     schema: z.object({
+        ...localizedFields,
         title: z.string(),
         date: z.string().optional(),
         description: z.string().optional(),
@@ -45,6 +55,7 @@ const posts = defineCollection({
 const teaching = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/teaching" }),
     schema: z.object({
+        ...localizedFields,
         title: z.string(),
         institution: z.string().optional(),
         description: z.string().optional(),
@@ -54,29 +65,36 @@ const teaching = defineCollection({
 });
 
 const bio = defineCollection({
-    loader: glob({ pattern: "bio.md", base: "./src/content" }),
+    loader: glob({ pattern: "bio*.md", base: "./src/content" }),
     schema: z.object({
         name: z.string(),
         avatar: z.string(),
         shortBio: z.string().optional(),
         institution: z.string().optional(),
+        lang: z.enum(["es", "en"]).optional(),
+        translationKey: z.string().optional(),
     }),
 });
 
 const projects = defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
     schema: z.object({
+        ...localizedFields,
         title: z.string(),
         description: z.string().optional(),
+        published: z.boolean().optional(),
         tags: z.array(z.string()).optional(),
         external_url: z.string().optional(),
+        app_store_url: z.string().url().optional(),
+        google_play_url: z.string().url().optional(),
         image: z.string().optional(),
     }),
 });
 
 const cv = defineCollection({
-    loader: glob({ pattern: "cv.md", base: "./src/content" }),
+    loader: glob({ pattern: "cv*.md", base: "./src/content" }),
     schema: z.object({
+        ...localizedFields,
         name: z.string(),
         title: z.string(),
         experience: z.array(z.object({

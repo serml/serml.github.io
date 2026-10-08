@@ -33,7 +33,6 @@ export interface AnalyticsConfig {
 
 export interface NavLink {
     href: string;
-    label: string;
     isActive: boolean;
 }
 
@@ -45,8 +44,6 @@ export interface SocialLink {
 }
 
 export interface PageConfig {
-    title: string;
-    subtitle: string;
     isActive: boolean;
 }
 

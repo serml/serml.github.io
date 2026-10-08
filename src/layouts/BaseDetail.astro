@@ -1,50 +1,71 @@
 ---
-import { getEntry, render } from "astro:content";
+import { render } from "astro:content";
 import BaseLayout from "./BaseLayout.astro";
 import BackLink from "../components/ui/BackLink.astro";
 import Tag from "../components/ui/Tag.astro";
 import Icon from "../components/ui/Icon.astro";
 import { getDetailItem } from "../utils/adapters";
 import { SITE } from "../config";
+import type { Locale } from "../utils/i18n";
+import { getTranslations, localizedPath } from "../utils/i18n";
+import { getLocalizedEntry } from "../utils/content";
+import ProjectArtwork from "../components/content/ProjectArtwork.astro";
 
 interface Props {
     collection: "publications" | "talks" | "projects" | "posts" | "teaching";
     id: string;
+    lang?: Locale;
 }
 
-const { collection, id } = Astro.props;
-const entry = (await getEntry(collection, id)) as any;
+const { collection, id, lang = "es" } = Astro.props;
+const { ui, collectionNames, siteDescription } = getTranslations(lang);
+const entry = (await getLocalizedEntry(collection, id, lang)) as any;
 
 if (!entry) return Astro.redirect("/404");
 
 const { Content } = await render(entry);
-const detail = getDetailItem(entry, collection);
+const detail = getDetailItem(entry, collection, lang);
 
 const meta = [];
-if (detail.date) meta.push({ label: "Date", value: detail.date, icon: "Calendar" });
-if (detail.authors) meta.push({ label: "Author", value: detail.authors, icon: "User" });
+if (detail.date) meta.push({ label: ui.date, value: detail.date, icon: "Calendar" });
+if (detail.authors) meta.push({ label: ui.author, value: detail.authors, icon: "User" });
 if (detail.extraInput) {
     const icon = "Institution";
-    const label = collection === "publications" ? "Journal" : collection === "talks" ? "Event" : collection === "teaching" ? "Institution" : "Info";
+    const label = collection === "publications" ? ui.journal : collection === "talks" ? ui.event : collection === "teaching" ? ui.institution : ui.info;
     meta.push({ label, value: detail.extraInput, icon });
 }
-
-const description = entry.data.description || detail.description || SITE.desc;
+const generatedDescription = [
+    detail.title,
+    entry.data.author && `${lang === "es" ? "Por" : "By"} ${entry.data.author}.`,
+    entry.data.journal && `${lang === "es" ? "Publicado en" : "Published in"} ${entry.data.journal}.`,
+].filter(Boolean).join(" ");
+const description = entry.data.description || detail.description || generatedDescription || siteDescription;
 const ogImage = entry.data.image || SITE.ogImage;
+const titleHref = collection === "publications" && entry.data.doi
+    ? `https://doi.org/${entry.data.doi}`
+    : undefined;
+const externalUrl = collection === "publications" ? undefined : detail.externalUrl;
 ---
 
-<BaseLayout title={detail.title} description={description} ogImage={ogImage} ogType="article">
+<BaseLayout title={detail.title} description={description} ogImage={ogImage} ogType="article" lang={lang}>
     <div class="flex justify-between items-center mb-4">
-        <BackLink href={detail.backHref} label={collection} />
-        {detail.externalUrl && (
-            <a href={detail.externalUrl} target="_blank" rel="noopener noreferrer" class="link">
-                View external
+        <BackLink href={localizedPath(detail.backHref, lang)} label={`${ui.backTo} ${collectionNames[collection]}`} />
+        {externalUrl && (
+            <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="link">
+                {ui.viewExternal}
             </a>
         )}
     </div>
 
-    <article>
-        <h1 class="page-title mb-4">{detail.title}</h1>
+    <article class:list={[collection === "projects" && "project-detail"]}>
+        {collection === "projects" && <ProjectArtwork className="project-detail-artwork" />}
+        {titleHref ? (
+            <a href={titleHref} target="_blank" rel="noopener noreferrer" class="no-underline">
+                <h1 class="page-title mb-4">{detail.title}</h1>
+            </a>
+        ) : (
+            <h1 class="page-title mb-4">{detail.title}</h1>
+        )}
 
         {meta.length > 0 && (
             <div class="card-meta mb-4">
@@ -60,8 +81,27 @@ const ogImage = entry.data.image || SITE.ogImage;
         {detail.tags && detail.tags.length > 0 && (
             <div class="flex gap-2 flex-wrap mb-4">
                 {detail.tags.map((tag: string) => (
-                    <Tag name={tag} size="sm" />
+                    collection === "projects" ? (
+                        <span class="project-tag">{tag}</span>
+                    ) : (
+                        <Tag name={tag} size="sm" />
+                    )
                 ))}
+            </div>
+        )}
+
+        {collection === "projects" && (entry.data.app_store_url || entry.data.google_play_url) && (
+            <div class="project-store-links project-detail-store-links">
+                {entry.data.app_store_url && (
+                    <a href={entry.data.app_store_url} target="_blank" rel="noopener noreferrer" class="project-store-button">
+                        {ui.appStore}<span aria-hidden="true">↗</span>
+                    </a>
+                )}
+                {entry.data.google_play_url && (
+                    <a href={entry.data.google_play_url} target="_blank" rel="noopener noreferrer" class="project-store-button project-store-button-secondary">
+                        {ui.googlePlay}<span aria-hidden="true">↗</span>
+                    </a>
+                )}
             </div>
         )}
 

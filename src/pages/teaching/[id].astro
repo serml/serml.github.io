@@ -1,11 +1,13 @@
 ---
-import { getCollection } from "astro:content";
 import BaseDetail from "../../layouts/BaseDetail.astro";
+import { PAGES } from "../../config";
+import { getContentSlug, getLocalizedCollection } from "../../utils/content";
 
 export async function getStaticPaths() {
-    const entries = await getCollection("teaching");
+    if (PAGES.teaching.isActive === false) return [];
+    const entries = await getLocalizedCollection("teaching", "es");
     return entries.map((entry) => ({
-        params: { id: entry.id },
+        params: { id: getContentSlug(entry) },
         props: { entry },
     }));
 }
@@ -13,4 +15,4 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 ---
 
-<BaseDetail collection="teaching" id={entry.id} />
+<BaseDetail collection="teaching" id={getContentSlug(entry)} />

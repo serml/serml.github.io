@@ -1,26 +1,31 @@
 ---
 import { SITE, SOCIALS, SOCIAL_ICONS } from "../../config";
-import { getCollection } from "astro:content";
 import Icon from "../ui/Icon.astro";
-import { Image } from 'astro:assets';
+import { getLocale, getTranslations } from "../../utils/i18n";
+import { getLocalizedBio } from "../../utils/content";
 
 const activeSocials = SOCIALS.filter((s) => s.isActive);
-const bioCollection = await getCollection("bio");
-const bio = bioCollection[0]?.data;
+const locale = getLocale(Astro.url.pathname);
+const bioEntry = await getLocalizedBio(locale);
+const bio = bioEntry?.data;
+const { profile } = getTranslations(locale);
+const bioHasTranslation = bioEntry?.data.lang === locale || bioEntry?.id === `bio.${locale}`;
+const shortBio = bioHasTranslation ? bio?.shortBio || profile.shortBio : profile.shortBio;
+const avatarAlt = locale === "es" ? `Foto de ${bio?.name}` : `Photo of ${bio?.name}`;
 ---
 
 <aside class="sidebar max-lg:flex-row max-lg:flex-wrap max-lg:gap-3 max-md:gap-2">
     <div class="flex flex-col items-center text-center max-lg:flex-row max-lg:text-left max-lg:gap-3 max-lg:items-center max-md:gap-2">
         {bio?.avatar && (
-            <Image
+            <img
                 src={`/${bio.avatar}`}
-                alt={`Avatar of ${bio.name}`}
-                width={160} /* Maximum width in global.css for sidebar-avatar class */
-                height={160}
-                densities={[1.5, 2]} 
-                format="webp"
+                alt={avatarAlt}
+                width="160"
+                height="160"
                 class="sidebar-avatar"
                 loading="eager"
+                fetchpriority="high"
+                decoding="async"
             />
         )}
         <div class="flex flex-col items-center max-lg:items-start">
@@ -31,8 +36,8 @@ const bio = bioCollection[0]?.data;
                     {bio.institution}
                 </p>
             )}
-            {bio?.shortBio && (
-                <p class="sidebar-bio mt-2 max-md:hidden">{bio.shortBio}</p>
+            {shortBio && (
+                <p class="sidebar-bio mt-2 max-md:hidden">{shortBio}</p>
             )}
             <div class="flex gap-1 flex-wrap items-center justify-center max-lg:justify-start mt-3">
                 {activeSocials.map((social) => (
@@ -41,7 +46,7 @@ const bio = bioCollection[0]?.data;
                         aria-label={social.linkTitle}
                         title={social.linkTitle}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         class="social-link"
                     >
                         <Icon name={SOCIAL_ICONS[social.name] || social.name} size={24} />

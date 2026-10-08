@@ -1,0 +1,47 @@
+---
+import ProjectArtwork from "./ProjectArtwork.astro";
+import type { Locale } from "../../utils/i18n";
+import { getTranslations } from "../../utils/i18n";
+
+interface Props {
+	title: string;
+	description?: string;
+	tags?: string[];
+	detailHref: string;
+	appStoreUrl?: string;
+	googlePlayUrl?: string;
+	lang: Locale;
+}
+
+const { title, description, tags = [], detailHref, appStoreUrl, googlePlayUrl, lang } = Astro.props;
+const { ui } = getTranslations(lang);
+---
+
+<article class="project-showcase-card">
+	<a href={detailHref} class="project-showcase-visual-link" aria-label={title}>
+		<ProjectArtwork />
+	</a>
+	<div class="project-showcase-content">
+		<p class="project-showcase-kicker">{ui.mobileApp}<span>·</span>{lang === "es" ? "Arte y cultura" : "Art & culture"}</p>
+		<h2 class="project-showcase-title"><a href={detailHref}>{title}</a></h2>
+		{description && <p class="project-showcase-description">{description}</p>}
+		{tags.length > 0 && (
+			<div class="project-showcase-tags">
+				{tags.map((tag) => <span class="project-tag">{tag}</span>)}
+			</div>
+		)}
+		<div class="project-showcase-actions">
+			<a href={detailHref} class="project-store-button project-details-button">{ui.projectDetails}<span aria-hidden="true">→</span></a>
+			{appStoreUrl && (
+				<a href={appStoreUrl} target="_blank" rel="noopener noreferrer" class="project-store-button project-store-button-secondary">
+					{ui.appStore}<span aria-hidden="true">↗</span>
+				</a>
+			)}
+			{googlePlayUrl && (
+				<a href={googlePlayUrl} target="_blank" rel="noopener noreferrer" class="project-store-button project-store-button-secondary">
+					{ui.googlePlay}<span aria-hidden="true">↗</span>
+				</a>
+			)}
+		</div>
+	</div>
+</article>

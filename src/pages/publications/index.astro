@@ -1,6 +1,9 @@
 ---
 import BaseListing from "../../layouts/BaseListing.astro";
 import { PAGES } from "../../config";
+import { getTranslations } from "../../utils/i18n";
+
+const { publications } = getTranslations("es").pages;
 
 if (PAGES.publications.isActive === false) {
     return Astro.redirect("/404");
@@ -9,6 +12,6 @@ if (PAGES.publications.isActive === false) {
 
 <BaseListing
     collection="publications"
-    title={PAGES.publications.title}
-    subtitle={PAGES.publications.subtitle}
+    title={publications.title}
+    subtitle={publications.subtitle}
 />

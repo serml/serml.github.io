@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "about": "About",
+    "publications": "Publications",
+    "talks": "Academic Activities",
+    "tfts": "TFTs",
+    "teaching": "Teaching",
+    "projects": "Projects",
+    "blog": "Blog",
+    "tags": "Tags",
+    "cv": "CV"
+  },
+  "pages": {
+    "home": {
+      "title": "About Me",
+      "subtitle": ""
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": ""
+    },
+    "publications": {
+      "title": "Publications",
+      "subtitle": "A collection of research papers and scientific articles."
+    },
+    "talks": {
+      "title": "Academic Activities",
+      "subtitle": "Talks, conferences, and editorial contributions."
+    },
+    "tfts": {
+      "title": "TFTs",
+      "subtitle": "Suggested final-degree project topics, adaptable to each student's interests."
+    },
+    "projects": {
+      "title": "Projects",
+      "subtitle": "Applications and other projects developed during my spare time."
+    },
+    "teaching": {
+      "title": "Teaching",
+      "subtitle": "Academic courses and educational materials."
+    },
+    "tags": {
+      "title": "Tags",
+      "subtitle": "Explore content by topic."
+    },
+    "cv": {
+      "title": "Curriculum Vitae",
+      "subtitle": "Academic and professional history."
+    }
+  },
+  "profile": {
+    "shortBio": "Professor at the Technical University of Madrid"
+  },
+  "collectionNames": {
+    "posts": "posts",
+    "projects": "projects",
+    "talks": "academic activities",
+    "teaching": "teaching",
+    "publications": "publications"
+  },
+  "siteDescription": "Professor and AI researcher at UPM and member of the Intelligent Systems Group. My work applies AI to mental health, natural language processing, and agent-based systems.",
+  "ui": {
+    "newer": "Newer",
+    "older": "Older",
+    "page": "Page",
+    "of": "of",
+    "backTo": "Go back to",
+    "viewExternal": "View external",
+    "projectDetails": "Project details",
+    "mobileApp": "Mobile app",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "talksAndPresentations": "Talks and Presentations",
+    "guestEditing": "Guest Editing",
+    "specialIssue": "Special Issue",
+    "submissionDeadline": "Submission deadline",
+    "guestEditors": "Guest Editors",
+    "affiliation": "Affiliation",
+    "researchInterests": "Research interests",
+    "topicsOfInterest": "Topics of interest",
+    "callForPapers": "View the call for papers and submit your paper",
+    "date": "Date",
+    "author": "Author",
+    "journal": "Journal",
+    "event": "Event",
+    "institution": "Institution",
+    "info": "Info",
+    "professionalExperience": "Professional Experience",
+    "education": "Education",
+    "taggedWith": "Content tagged with",
+    "uniqueTopics": "unique topics",
+    "noTags": "No tags found in your content yet.",
+    "previousPost": "Previous Post",
+    "nextPost": "Next Post",
+    "minRead": "min read",
+    "switchLanguage": "Change language",
+    "pageNotFound": "Page Not Found",
+    "goBack": "Go back",
+    "returnHome": "Return home",
+    "builtWith": "Built with",
+    "toggleTheme": "Toggle Dark Mode",
+    "developerTools": "Developer Tools",
+    "share": "Share:",
+    "shareOnTwitter": "Share on Twitter",
+    "shareOnFacebook": "Share on Facebook",
+    "shareOnLinkedIn": "Share on LinkedIn",
+    "shareByEmail": "Share via Email",
+    "thesis": "Thesis"
+  }
+}

@@ -1,0 +1,70 @@
+---
+import type { Locale } from "../../utils/i18n";
+import { getTranslations } from "../../utils/i18n";
+
+interface Props {
+	lang: Locale;
+}
+
+const { lang } = Astro.props;
+const { ui } = getTranslations(lang);
+const isSpanish = lang === "es";
+---
+
+<article class="editorial-service-card">
+	<header class="editorial-service-header">
+		<div class="editorial-service-heading">
+			<p class="editorial-service-kicker">{ui.specialIssue} · {ui.guestEditing}</p>
+			<h3>Advanced Machine Learning for Natural Language Processing: Methods and Applications</h3>
+		</div>
+		<div class="editorial-deadline">
+			<span>{ui.submissionDeadline}</span>
+			<strong>{isSpanish ? "30 de noviembre de 2026" : "30 November 2026"}</strong>
+		</div>
+	</header>
+
+	<div class="editorial-service-body">
+		<div class="editorial-editors">
+			<div>
+				<span class="editorial-label">{ui.guestEditors}</span>
+				<p><strong>Prof. Carlos Á. Iglesias</strong><br /><a href="mailto:carlosangel.iglesias@upm.es">carlosangel.iglesias@upm.es</a></p>
+				<p><strong>Dr. Sergio Muñoz</strong><br /><a href="mailto:sergio.munoz@upm.es">sergio.munoz@upm.es</a></p>
+			</div>
+			<div>
+				<span class="editorial-label">{ui.affiliation}</span>
+				<p>{isSpanish
+					? "Grupo de Sistemas Inteligentes (GSI), ETSI de Telecomunicación, Universidad Politécnica de Madrid, Madrid, España."
+					: "Intelligent Systems Group (GSI), ETSI Telecomunicación, Technical University of Madrid (UPM), Madrid, Spain."}</p>
+				<span class="editorial-label">{ui.researchInterests}</span>
+				<p>{isSpanish
+					? "Agentes, procesamiento del lenguaje natural, salud mental, aprendizaje automático e inteligencia artificial en el borde (edge AI)."
+					: "Agents, natural language processing, mental health, machine learning, and edge AI."}</p>
+			</div>
+		</div>
+
+		<div class="editorial-service-summary prose">
+			<p>{isSpanish
+				? "El número especial reúne investigación sobre métodos avanzados de aprendizaje automático para el procesamiento del lenguaje natural y sus aplicaciones. Se buscan contribuciones teóricas y aplicadas, con validación empírica, benchmarks o metodologías reproducibles."
+				: "This special issue brings together research on advanced machine-learning methods for natural language processing and their applications. It welcomes theoretical and applied contributions with empirical validation, benchmarks, or reproducible methodologies."}</p>
+			<h4>{ui.topicsOfInterest}</h4>
+			<ul>
+				{(isSpanish
+					? [
+						"Modelos fundacionales y modelos de lenguaje a gran escala, incluida su adaptación eficiente.",
+						"Robustez, mitigación de sesgos e inteligencia artificial responsable en tecnologías del lenguaje.",
+						"NLP multilingüe, aprendizaje por transferencia y adaptación al dominio.",
+						"Sistemas de NLP explicables y éticos, integración multimodal y evaluación de modelos.",
+					]
+					: [
+						"Foundation models and large language models, including efficient adaptation.",
+						"Robustness, bias mitigation, and responsible AI in language technologies.",
+						"Multilingual NLP, transfer learning, and domain adaptation.",
+						"Explainable and ethical NLP systems, multimodal integration, and model evaluation.",
+					]).map((topic) => <li>{topic}</li>)}
+			</ul>
+			<a class="editorial-issue-link" href="https://www.techscience.com/cmc/special_detail/natural-language-processing" target="_blank" rel="noopener noreferrer">
+				{ui.callForPapers}<span aria-hidden="true">↗</span>
+			</a>
+		</div>
+	</div>
+</article>

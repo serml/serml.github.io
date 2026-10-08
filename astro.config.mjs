@@ -18,7 +18,12 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  site: 'https://rubzip.github.io',
-  base: '/academic-portfolio-astro',
-  integrations: [sitemap()],
+  site: 'https://serml.github.io',
+  base: '/',
+  integrations: [sitemap({
+    filter: (page) => {
+      const pathname = new URL(page).pathname;
+      return !/^\/(?:en\/)?(?:cv|tags|teaching|dev-tools|posts|editorial)(?:\/|$)/.test(pathname);
+    },
+  })],
 });
